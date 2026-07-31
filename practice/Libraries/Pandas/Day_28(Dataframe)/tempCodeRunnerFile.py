@@ -1,1 +1,0 @@
-print(movies.iloc[6])
