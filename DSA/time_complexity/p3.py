@@ -6,7 +6,7 @@ class Mylist:
         self.size = 1
         self.n = 0
         # create a ctype array(static,referential) with size = self.size
-        self.A = self. __make_array(self.size)
+        self.A = self.__make_array(self.size)
 
     # len
     def __len__(self):
@@ -26,13 +26,15 @@ class Mylist:
         if self.n == 0:
             return 'Empty list'
 
-        print(self.A[self.n -1])
+        item = self.A[self.n - 1]
         self.n = self.n - 1
+        return item
 
     # clear
     def clear(self):
         self.n = 0
         self.size = 1
+        self.A = self.__make_array(self.size)
 
     # find
     def find(self,item):
@@ -40,12 +42,15 @@ class Mylist:
             if self.A[i] == item:
                 return i
 
-            return 'ValueError - Item not in list'
+        return ValueError('Item not in list')
 
     # insert
     def insert(self,pos,item):
+        if not (0<= pos <= self.n):
+            raise IndexError('Index out of range')
+        
         if self.size == self.n:
-            self. __resize(self.size*2)
+            self.__resize(self.size*2)
 
         for i in range(self.n,pos,-1):
             self.A[i] = self.A[i-1]
@@ -55,21 +60,19 @@ class Mylist:
 
     # delete
     def __delitem__(self,pos):
-        if 0<= pos < self.n:
-            for i in range(pos,self.n-1):
-                self.A[i] = self.A[i+1]
+        if not (0 <= pos < self.n):
+            raise IndexError("Index out of range")
+        
+        for i in range(pos,self.n-1):
+            self.A[i] = self.A[i+1]
 
-            self.n = self.n - 1 
+        self.n = self.n - 1 
 
     # remove
     def remove(self,item):
         pos = self.find(item)
-
-        if type(pos) == int:
-            self. __delitem__(pos)
-
-        else:
-            return pos
+        self.__delitem__(pos)
+        return pos
 
     # sort
     def sort(self):
@@ -144,7 +147,7 @@ class Mylist:
     # resize
     def __resize(self,new_capacity):
         #create a new array with new_capacity
-        B = self. __make_array(new_capacity)
+        B = self.__make_array(new_capacity)
         self.size = new_capacity
 
         # copy the content of A to B
@@ -165,8 +168,8 @@ class Mylist:
     def __getitem__(self,index):
         if 0<= index < self.n:
             return self.A[index]
-        else:
-            return 'IndexError - Index out of range'
+        
+        raise IndexError('Index out of range')
     
     # create array
     def __make_array(self,capacity):
