@@ -16,10 +16,49 @@ class Mylist:
     def append(self,item):
         if self.n == self.size:
             #resize
-            self. __resize(self.size*2)
+            self.__resize(self.size*2)
 
         self.A[self.n] = item
         self.n = self.n + 1
+
+    # extend
+    def extend(self,new_list):
+        for i in range(new_list.n):
+            self.append(new_list[i])
+
+    # extend2
+    def extend2(self,new_list):
+
+        for i in range(new_list.n):
+            if self.n == self.size:
+                # resize
+                self.__resize(self.size*2)
+
+            self.A[self.n] = new_list[i]
+            self.n += 1
+
+    # copy
+    def copy(self):
+        copied_list = Mylist()
+        for i in range(self.n):
+            copied_list.append(self.A[i])
+
+        return copied_list
+
+    # __setitem__
+    def __setitem__(self,index,item):
+        if not 0 <= index < self.n:
+            raise IndexError('Index is Invalid')
+
+        self.A[index] = item
+
+    # contains
+    def __contains__(self, item):
+        for i in range(self.n):
+            if self.A[i] == item:
+                return True
+        return False
+
 
     # pop
     def pop(self):
@@ -142,6 +181,17 @@ class Mylist:
             raise ValueError('avg() called on empty list')
 
         return self.sum()/ self.n
+
+    # count
+    def count(self,item):
+        counter = 0
+
+        for i in range(self.n):
+            if self.A[i] == item:
+                counter += 1
+
+        return counter
+
         
 
     # resize
@@ -187,6 +237,11 @@ l.append(0)
 l.append(7)
 
 l.insert(2, 6)
+l2 = Mylist()
+l2.append(30)
+l2.append(40)
+l2.append(50)
+l.extend(l2)
 print(l)
 l.reverse()
 # l.sort()
